@@ -144,7 +144,27 @@ static void rs6000mc_realize(DeviceState *dev, Error **errp)
     unsigned int ram_size = s->ram_size / MiB;
 
     while (socket < 6) {
-        if (ram_size >= 64) {
+		if (ram_size >= 2048) {
+			s->simm_size[socket] = 1024;
+            s->simm_size[socket + 1] = 1024;
+            ram_size -= 2048;
+        } else if (ram_size >= 1024) {
+			s->simm_size[socket] = 512;
+            s->simm_size[socket + 1] = 512;
+            ram_size -= 1024;
+        } else if (ram_size >= 512) {
+			s->simm_size[socket] = 256;
+            s->simm_size[socket + 1] = 256;
+            ram_size -= 512;
+        } else if (ram_size >= 256) {
+			s->simm_size[socket] = 128;
+            s->simm_size[socket + 1] = 128;
+            ram_size -= 256;
+        } else if (ram_size >= 128) {
+			s->simm_size[socket] = 64;
+            s->simm_size[socket + 1] = 64;
+            ram_size -= 128;
+        } else if (ram_size >= 64) {
             s->simm_size[socket] = 32;
             s->simm_size[socket + 1] = 32;
             ram_size -= 64;
